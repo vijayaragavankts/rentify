@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Seller = require("../models/sellerSchema");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const generateToken = require("../config/generateToken");
 
 router.get("/", (req, res) => {
@@ -35,6 +35,8 @@ router.post("/register", async (req, res) => {
       name: seller.name,
       email: seller.email,
       password: seller.password,
+      lastname: seller.lastname,
+      number: seller.lastname,
 
       token: generateToken(seller._id),
       id: seller._id,
@@ -72,6 +74,10 @@ router.post("/login", async (req, res) => {
       token: generateToken(seller._id),
       id: seller._id,
       name: seller.name,
+      email: seller.email,
+      password: seller.password,
+      lastname: seller.lastname,
+      number: seller.lastname,
     });
   } catch (err) {
     console.log(err);

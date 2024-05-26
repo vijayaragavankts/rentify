@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const homeRouter = require("./routes/homeRouter");
+// const homeRouter = require("./routes/homeRouter");
 const buyerRouter = require("./routes/buyerRouter");
 const sellerRouter = require("./routes/sellerRouter");
 const createRouter = require("./routes/createRouter");
@@ -38,17 +38,20 @@ mongoose
 const app = express();
 
 app.use(cors());
-app.use(
-  cors({
-    origin: ["http://localhost:3001", "http://localhost:3000"],
-    credentials: true,
-  })
-);
+const corsConfig = {
+  origin: "*",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+};
+
+app.options("", cors(corsConfig));
+app.use(cors(corsConfig));
+
 app.set("trust proxy", 1);
 
 app.use(express.json()); // middleware
 
-app.use("/", homeRouter);
+// app.use("/", homeRouter);
 app.use("/buyer", buyerRouter);
 app.use("/seller", sellerRouter);
 app.use("/getItemsfromSeller", createRouter);

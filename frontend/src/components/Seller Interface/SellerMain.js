@@ -37,9 +37,9 @@ const SellerMain = () => {
     navigate("/create");
   };
 
-  const handleInterestedBuyers = () => {
-    navigate("/interestedBuyersList");
-  };
+  // const handleInterestedBuyers = () => {
+  //   navigate("/interestedBuyersList");
+  // };
 
   const handleSortOrderChange = (event) => {
     const value = event.target.value;
@@ -60,11 +60,11 @@ const SellerMain = () => {
           />
         </Box>
 
-        <Flex justify="flex-end" mb={6}>
+        {/* <Flex justify="flex-end" mb={6}>
           <Button colorScheme="purple" onClick={handleInterestedBuyers}>
             <Icon as={InfoOutlineIcon} /> &nbsp; View Interested Buyers
           </Button>
-        </Flex>
+        </Flex> */}
 
         <Flex justify="space-between" align="center" mb={6}>
           <Select

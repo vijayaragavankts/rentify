@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Buyer = require("../models/buyerSchema");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const generateToken = require("../config/generateToken");
 
 router.get("/", (req, res) => {
@@ -70,6 +70,9 @@ router.post("/login", async (req, res) => {
       success: true,
       message: "Successfully Logged in",
       email: buyer.email,
+      lastname: buyer.lastname,
+      name: buyer.name,
+      number: buyer.number,
       id: buyer._id,
       token: generateToken(buyer._id),
     });
