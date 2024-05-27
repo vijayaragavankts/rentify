@@ -43,12 +43,13 @@ const PropertyList = ({ searchTerm, sortOrder }) => {
   const toast = useToast();
 
   useEffect(() => {
-    if (!JSON.parse(localStorage.getItem("userInfo"))) {
-      navigate("/buyers");
-    }
     const storedUser = JSON.parse(localStorage.getItem("userInfo"));
-    setNewUser(storedUser);
-  }, []);
+    if (!storedUser) {
+      navigate("/buyers");
+    } else {
+      setNewUser(storedUser);
+    }
+  }, [navigate]);
 
   const fetchAll = async () => {
     try {
@@ -78,90 +79,101 @@ const PropertyList = ({ searchTerm, sortOrder }) => {
 
   const handleInterestedClick = async (item) => {
     try {
+      const userData = JSON.parse(localStorage.getItem("userInfo"));
+
+      if (!userData) {
+        console.error("User data not found in localStorage");
+        // Handle the case where user data is missing (optional)
+        return;
+      }
+
       const config = {
         credentials: "include",
         headers: {
           Authorization: `Bearer ${newUser.data.token}`,
         },
       };
+
       // Fetch seller details from the API based on item's seller ID
       const response = await axios.get(
         `${URL}/sellerDetails/${item.seller}`,
         config
       );
-      setSellerDetails(response.data);
-      handleEmailForSeller();
-      handleEmailForBuyer();
-      setIsModalOpen(true); // Open modal to show seller details
+      const sellerData = response.data;
+
+      // Set seller details and update state efficiently using a callback
+      setSellerDetails((prevSellerDetails) => ({
+        ...prevSellerDetails,
+        ...sellerData,
+      }));
+
+      // Handle emails after state update using a separate async function
+      handleEmails(sellerData, userData);
+
+      // Open modal to show seller details (assuming you have a modal component)
+      setIsModalOpen(true);
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching seller details:", err);
     }
   };
 
-  const handleEmailForBuyer = () => {
-    emailjs
-      .send(
-        "service_59payva",
-        "template_wte6iu9",
-        {
-          from_name: sellerDetails.name,
-          to_name: user.name,
-          from_email: sellerDetails.email,
-          to_email: user.email,
-          message: `Thanks for showing interest in my property. Here are my details , First Name : ${sellerDetails.name} LastName : ${sellerDetails.lastname} 
-           Email : ${sellerDetails.email} phone number : ${sellerDetails.number}`,
-        },
-        "Te3VLj2v179L0p9Ch"
-      )
-      .then(() => {
+  const handleEmails = async (sellerData, userData) => {
+    try {
+      const buyerMessage = `Thanks for showing interest in our properties. Here are the details of the seller:
+    * First Name: ${sellerData.name}
+    * Last Name: ${sellerData.lastname}
+    * Email: ${sellerData.email}
+    * Phone Number: ${sellerData.number}`;
+
+      const sellerMessage = `Someone showed interest in your property. Here are the buyer's details:
+    * First Name: ${userData.data.name}
+    * Last Name: ${userData.data.lastname}
+    * Email: ${userData.data.email}
+    * Phone Number: ${userData.data.number}`;
+
+      if (userData.data.email) {
+        await Promise.all([
+          sendEmail(sellerData.name, sellerData.email, sellerMessage),
+          sendEmail(userData.data.name, userData.data.email, buyerMessage),
+        ]);
+
         toast({
-          title: "Email sent successfully from seller to  you",
+          title: "Emails sent successfully!",
           status: "success",
           duration: 3000,
           isClosable: true,
         });
-      })
-      .catch((error) => {
-        toast({
-          title: "Email not sent",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
+      } else {
+        console.error("User email not available for sending emails.");
+        // Handle the case where user email is missing (optional)
+      }
+
+      // Display success toast for both emails sent
+    } catch (error) {
+      console.error("Error sending emails:", error);
+
+      // Display error toast for any email sending issue
+      toast({
+        title: "An error occurred while sending emails",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
       });
+    }
   };
 
-  const handleEmailForSeller = () => {
-    emailjs
-      .send(
-        "service_59payva",
-        "template_wte6iu9",
-        {
-          from_name: user.name,
-          to_name: sellerDetails.name,
-          from_email: user.email,
-          to_email: sellerDetails.email,
-          message: `I liked your property. Here are my details , First Name : ${user.name} LastName : ${user.lastname} 
-           Email : ${user.email} phone number : ${user.number}`,
-        },
-        "Te3VLj2v179L0p9Ch"
-      )
-      .then(() => {
-        toast({
-          title: "Email sent to seller successfully",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      })
-      .catch((error) => {
-        toast({
-          title: "Email not sent",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      });
+  const sendEmail = (toName, toEmail, message) => {
+    // Assuming you have emailjs configured with your service ID
+    return emailjs.send(
+      "service_59payva", // Replace with your service ID
+      "template_mmuyczk", // Replace with your template ID
+      {
+        to_name: toName,
+        to_email: toEmail,
+        message: message,
+      },
+      "Te3VLj2v179L0p9Ch" // Replace with your user ID
+    );
   };
 
   const handleLikeClick = async (itemId) => {

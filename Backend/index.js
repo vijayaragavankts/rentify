@@ -50,7 +50,7 @@ mongoose
     console.error("Error connecting to MongoDB:", err);
   });
 
-app.use("/", homeRouter);
+app.use("/home", homeRouter);
 app.use("/buyer", buyerRouter);
 app.use("/seller", sellerRouter);
 app.use("/getItemsfromSeller", createRouter);
