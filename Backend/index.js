@@ -25,15 +25,6 @@ require("dotenv").config();
 //   .catch((err) => {
 //     console.log(err);
 //   });
-console.log(process.env.MONGO_URI);
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MongoDB connected successfully");
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-  });
 
 const app = express();
 
@@ -50,6 +41,16 @@ app.use(cors(corsConfig));
 app.set("trust proxy", 1);
 
 app.use(express.json()); // middleware
+
+console.log(process.env.MONGO_URI);
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB connected successfully");
+  })
+  .catch((err) => {
+    console.error("Error connecting to MongoDB:", err);
+  });
 
 app.use("/", homeRouter);
 app.use("/buyer", buyerRouter);
