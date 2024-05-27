@@ -28,14 +28,13 @@ require("dotenv").config();
 
 const app = express();
 
-const corsConfig = {
-  origin: ["http://localhost:3000", "https://rentify--app.vercel.app"],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-};
-
-app.options("", cors(corsConfig));
-app.use(cors(corsConfig));
+app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://rentify--app.vercel.app"],
+    credentials: true,
+  })
+);
 
 app.set("trust proxy", 1);
 
