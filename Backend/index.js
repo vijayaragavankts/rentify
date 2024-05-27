@@ -30,7 +30,7 @@ const app = express();
 
 app.use(cors());
 const corsConfig = {
-  origin: "*",
+  origin: ["http://localhost:3000", "https://rentify--app.vercel.app"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
 };
