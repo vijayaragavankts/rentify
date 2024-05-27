@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-// const homeRouter = require("./routes/homeRouter");
+const homeRouter = require("./routes/homeRouter");
 const buyerRouter = require("./routes/buyerRouter");
 const sellerRouter = require("./routes/sellerRouter");
 const createRouter = require("./routes/createRouter");
@@ -51,7 +51,7 @@ app.set("trust proxy", 1);
 
 app.use(express.json()); // middleware
 
-// app.use("/", homeRouter);
+app.use("/", homeRouter);
 app.use("/buyer", buyerRouter);
 app.use("/seller", sellerRouter);
 app.use("/getItemsfromSeller", createRouter);
