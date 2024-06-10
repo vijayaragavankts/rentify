@@ -5,30 +5,33 @@
 
 ## Overview
 
-**Rentify** is a web application designed to simplify the rental process for both property owners and tenants. In the post-pandemic world, the demand for real estate has surged, especially in cities with high populations and IT offices. RENTIFY aims to bridge the gap between property owners and tenants by providing a platform where they can easily connect based on their requirements.
+**Rentify** is a web application designed to simplify the rental process for both property owners and tenants. In the post-pandemic world, the demand for real estate has surged, especially in cities with high populations and IT offices. RENTIFY aims to bridge the gap between property owners and tenants by providing a platform where they can easily connect based on their requirements. 
 
+Deployed Link : https://rentify--app.vercel.app/
 
 ## Technologies Used
 
 - **Frontend** : React JS, Chakra UI
 - **Backend** :  Node JS, Express JS, REST-API, MongoDB Database, JWT
-- **Additional ** : Axios, React-router, EmailJS
+- **Additional** : Axios, React-router, EmailJS
 
 
 ## Features
 
 ### User Authentication
 
-- **Sign in**: Users can sign in with their details.
-- **Login**: Users can log in to the application.
+- **Sign in**: Buyer/Seller can sign in with their details.
+- **Login**: Buyer/Seller can log in to the application.
 
 ### Property Management
 
-- **Add Property**: Logged-in users can add a new property.
-- **Search Properties**: Allows user to search property by location.
-- **View Properties**: All users can view the list of available properties.
-- **View Property Details**: Logged-in users can view detailed information about a property.
-- **My Properties**: Logged-in users can view, update, and delete their properties.
+- **Add Property**: Logged-in seller can add a new property.
+- **Search Properties**: Allows Buyer/Seller to search property by location.
+- **View Properties**: All buyers can view the list of available properties.
+- **View Property Details**: Logged-in buyers can view detailed information about a property.
+- **My Properties**: Logged-in sellers can view, update, and delete their properties.
+- **Like Property**: Logged-in Buyers can like a property.
+- **Email Notification**: Buyer and seller receives details of Buyer/Seller through email, when a buyer clicks "I'm Interested" button.
 
 ## API Endpoints
 
